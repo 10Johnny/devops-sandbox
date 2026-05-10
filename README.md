@@ -348,3 +348,104 @@ health_poller.py
 ## Walkthrough Video
 
 Video link: https://drive.google.com/file/d/1AdmouClwVQ_K2WJWuKrrxC0_HZT8GVuG/view?usp=drive_link
+
+## Architecture Diagram
+
+```text
+User / Grader
+     |
+     |---- Makefile Commands
+     |---- FastAPI Control API
+     |
+     v
+Platform Bash Scripts
+     |
+     |---- create_env.sh
+     |       |---- creates Docker network
+     |       |---- starts app container
+     |       |---- writes env state file
+     |       |---- creates Nginx route
+     |
+     |---- destroy_env.sh
+     |       |---- removes container
+     |       |---- removes Docker network
+     |       |---- removes Nginx config
+     |       |---- archives logs
+     |
+     |---- cleanup_daemon.sh
+     |       |---- checks TTL
+     |       |---- destroys expired environments
+     |
+     |---- simulate_outage.sh
+             |---- crash
+             |---- pause
+             |---- network
+             |---- recover
+             |---- stress
+
+Nginx Reverse Proxy
+     |
+     v
+Sandbox Flask App
+     |
+     v
+/health Endpoint
+
+health_poller.py
+     |
+     |---- checks /health every 30 seconds
+     |---- writes health logs
+     |---- marks failed envs as degraded
+
+## Architecture Diagram
+
+```text
+User / Grader
+     |
+     |---- Makefile Commands
+     |---- FastAPI Control API
+     |
+     v
+Platform Bash Scripts
+     |
+     |---- create_env.sh
+     |       |---- creates Docker network
+     |       |---- starts app container
+     |       |---- writes env state file
+     |       |---- creates Nginx route
+     |
+     |---- destroy_env.sh
+     |       |---- removes container
+     |       |---- removes Docker network
+     |       |---- removes Nginx config
+     |       |---- archives logs
+     |
+     |---- cleanup_daemon.sh
+     |       |---- checks TTL
+     |       |---- destroys expired environments
+     |
+     |---- simulate_outage.sh
+             |---- crash
+             |---- pause
+             |---- network
+             |---- recover
+             |---- stress
+
+Nginx Reverse Proxy
+     |
+     v
+Sandbox Flask App
+     |
+     v
+/health Endpoint
+
+health_poller.py
+     |
+     |---- checks /health every 30 seconds
+     |---- writes health logs
+     |---- marks failed envs as degraded
+```
+## Walkthrough Video
+
+Video link: https://drive.google.com/file/d/1AdmouClwVQ_K2WJWuKrrxC0_HZT8GVuG/view?usp=drive_link
+
