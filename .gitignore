@@ -1,0 +1,33 @@
+# Runtime/generated contents
+logs/*
+!logs/.gitkeep
+
+envs/*
+!envs/.gitkeep
+
+nginx/conf.d/*
+!nginx/conf.d/.gitkeep
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local process files
+*.pid
+
+# Docker/local temporary files
+docker-compose.override.yml
