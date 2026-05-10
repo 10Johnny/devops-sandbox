@@ -344,7 +344,8 @@ health_poller.py
      |---- checks /health every 30 seconds
      |---- writes health logs
      |---- marks failed envs as degraded
-Walkthrough Video
+```
+## Walkthrough Video
 
 Video link: https://drive.google.com/file/d/1AdmouClwVQ_K2WJWuKrrxC0_HZT8GVuG/view?usp=drive_link
 
