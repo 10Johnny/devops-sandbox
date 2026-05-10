@@ -299,8 +299,6 @@ GitHub: https://github.com/10Johnny
 
 ## Architecture Diagram
 
-## Architecture Diagram
-
 ```text
 User / Grader
      |
