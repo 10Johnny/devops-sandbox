@@ -299,36 +299,53 @@ GitHub: https://github.com/10Johnny
 
 ## Architecture Diagram
 
-```mermaid
-flowchart TD
-    User[User / Grader] --> Makefile[Makefile Commands]
-    User --> API[FastAPI Control API]
+## Architecture Diagram
 
-    Makefile --> Scripts[Platform Bash Scripts]
-    API --> Scripts
+```text
+User / Grader
+     |
+     |---- Makefile Commands
+     |---- FastAPI Control API
+     |
+     v
+Platform Bash Scripts
+     |
+     |---- create_env.sh
+     |       |---- creates Docker network
+     |       |---- starts app container
+     |       |---- writes env state file
+     |       |---- creates Nginx route
+     |
+     |---- destroy_env.sh
+     |       |---- removes container
+     |       |---- removes Docker network
+     |       |---- removes Nginx config
+     |       |---- archives logs
+     |
+     |---- cleanup_daemon.sh
+     |       |---- checks TTL
+     |       |---- destroys expired environments
+     |
+     |---- simulate_outage.sh
+             |---- crash
+             |---- pause
+             |---- network
+             |---- recover
+             |---- stress
 
-    Scripts --> Create[create_env.sh]
-    Scripts --> Destroy[destroy_env.sh]
-    Scripts --> Cleanup[cleanup_daemon.sh]
-    Scripts --> Outage[simulate_outage.sh]
+Nginx Reverse Proxy
+     |
+     v
+Sandbox Flask App
+     |
+     v
+/health Endpoint
 
-    Create --> Docker[Docker App Containers]
-    Create --> Nginx[Nginx Reverse Proxy]
-    Create --> State[JSON State Files]
-    Create --> Logs[App Logs]
-
-    Nginx --> App[Sandbox Flask App]
-    App --> Health[/health Endpoint]
-
-    Monitor[health_poller.py] --> Health
-    Monitor --> HealthLogs[Health Logs]
-    Monitor --> State
-
-    Cleanup --> State
-    Cleanup --> Destroy
-    Outage --> Docker
-    Destroy --> Archive[Archived Logs]
-```
+health_poller.py
+     |
+     |---- checks /health every 30 seconds
+     |---- writes health logs
+     |---- marks failed envs as degraded
 
 ## Walkthrough Video
 
