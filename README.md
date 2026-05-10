@@ -348,3 +348,21 @@ health_poller.py
 ## Walkthrough Video
 
 Video link: https://drive.google.com/file/d/1AdmouClwVQ_K2WJWuKrrxC0_HZT8GVuG/view?usp=drive_link
+
+```text
+Architecture summary:
+User / Grader uses Makefile commands or the FastAPI Control API.
+
+Makefile/API call the platform scripts:
+- create_env.sh creates Docker network, app container, Nginx route, state file, and logs.
+- destroy_env.sh removes container, network, Nginx config, state file, and archives logs.
+- cleanup_daemon.sh checks TTL and destroys expired environments.
+- simulate_outage.sh supports crash, pause, network, recover, and stress.
+- health_poller.py checks /health every 30 seconds and marks failed environments as degraded.
+
+Traffic flow:
+User -> Nginx Reverse Proxy -> Sandbox Flask App -> /health endpoint
+
+Logs:
+App logs and health logs are stored per environment and archived on destroy.
+
